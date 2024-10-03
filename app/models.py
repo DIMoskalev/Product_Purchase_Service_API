@@ -6,7 +6,6 @@ from app.database import Base, int_pk, str_uniq, str_null_false, bool_default_fa
 
 # Создаем модель таблицы пользователей
 class User(Base):
-    id: Mapped[int_pk]
     full_name: Mapped[str]
     email: Mapped[str_uniq]
     phone: Mapped[str_uniq]
@@ -24,7 +23,6 @@ class User(Base):
 
 # Создаем модель таблицы товаров
 class Product(Base):
-    id: Mapped[int_pk]
     name: Mapped[str_null_false]
     price: Mapped[int_null_false]
     is_active: Mapped[bool_default_true]
@@ -38,7 +36,6 @@ class Product(Base):
 
 # Создаем модель таблицы корзины
 class Cart(Base):
-    id: Mapped[int_pk]
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship("User", back_populates="users")
 
@@ -51,7 +48,6 @@ class Cart(Base):
 
 # Создаем модель таблицы элемента корзины
 class CartItem(Base):
-    id: Mapped[int_pk]
     cart_id: Mapped[int] = mapped_column(ForeignKey("carts.id"), nullable=False)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
     quantity: Mapped[int_null_false] = mapped_column(default=1)
