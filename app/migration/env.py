@@ -8,7 +8,7 @@ from alembic import context
 import sys
 from os.path import dirname, abspath
 from app.database import DATABASE_URL, Base
-from app.models import User, Product, Cart, CartItem
+from app.models import User, Product, Cart
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
