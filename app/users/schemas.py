@@ -1,5 +1,4 @@
 import re
-from typing import List
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -48,24 +47,7 @@ class UserGet(BaseModel):
         orm_mode = True  # Включение поддержки работы с ORM
 
 
-class ProductCreate(BaseModel):
-    name: str
-    price: int
-
-
-class ProductUpdate(BaseModel):
-    name: str
-    price: int
-    is_active: bool
-
-
-class ProductGet(BaseModel):
-    id: int
-    name: str
-    price: float
-    is_active: bool
-
-
-class CartAdd(BaseModel):
-    product_id: int
-    quantity: int
+class UserLogin(BaseModel):
+    email: str = Field(..., description="Электронная почта")
+    phone: str = Field(..., description="Номер телефона")
+    hashed_password: str = Field(..., min_length=8, max_length=30, description="Пароль, от 5 до 30 символов")
