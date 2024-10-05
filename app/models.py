@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database import Base, int_pk, str_uniq, str_null_false, bool_default_false, int_null_false, bool_default_true
+from app.database import Base, str_uniq, str_null_false, bool_default_false, int_null_false, bool_default_true
 
 
 # Создаем модель таблицы пользователей
@@ -45,8 +45,8 @@ class Cart(Base):
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
     quantity: Mapped[int_null_false] = mapped_column(default=1)
 
-    user: Mapped["User"] = relationship("User", back_populates="carts")
-    product: Mapped["Product"] = relationship("Product", back_populates="carts")
+    users: Mapped["User"] = relationship("User", back_populates="carts")
+    products: Mapped["Product"] = relationship("Product", back_populates="carts")
 
     def __str__(self):
         return (f"{self.__class__.__name__}(id={self.id}, "
