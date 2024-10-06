@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Annotated
 
 from sqlalchemy import func
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs, AsyncSession
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 
 from app.config import get_db_url
@@ -41,8 +41,8 @@ class Base(AsyncAttrs, DeclarativeBase):
     updated_at: Mapped[updated_at]
 
 
-# # Функция для получения сессии
-# async def get_db() -> AsyncSession:
-#     """Создает и возвращает новую сессию базы данных."""
-#     async with SessionLocal() as session:
-#         yield session
+# Функция для получения сессии
+async def get_db() -> AsyncSession:
+    """Создает и возвращает новую сессию базы данных."""
+    async with SessionLocal() as session:
+        yield session

@@ -1,20 +1,23 @@
 from pydantic import BaseModel
 
 
-class ProductCreate(BaseModel):
+class ProductBase(BaseModel):
     name: str
     price: int
 
 
-class ProductUpdate(BaseModel):
-    name: str
-    price: int
+class ProductCreate(ProductBase):
+    pass
+
+
+class ProductUpdate(ProductBase):
     is_active: bool
 
 
-class ProductGet(BaseModel):
+class ProductDelete(BaseModel):
+    name: str
+
+
+class ProductGet(ProductBase):
     id: int
-    name: str
-    price: float
     is_active: bool
-
