@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.database import engine, Base
 from app.users.router import router as router_users
 from app.products.router import router as router_products
+from app.carts.router import router as router_carts
 
 app = FastAPI()
 
@@ -20,7 +21,7 @@ app = FastAPI()
 
 app.include_router(router_users)
 app.include_router(router_products)
-# app.include_router(cart.router, prefix="/cart", tags=["cart"])
+app.include_router(router_carts)
 
 if __name__ == "__main__":
     import uvicorn
