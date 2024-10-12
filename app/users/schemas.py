@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class UserCreate(BaseModel):
@@ -38,14 +38,12 @@ class UserCreate(BaseModel):
 
 
 class UserGet(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     id: int
     full_name: str
     email: str
     phone: str
     is_admin: bool  # Поле для указания, является ли пользователь администратором
-
-    class Config:
-        orm_mode = True  # Включение поддержки работы с ORM
 
 
 class UserLogin(BaseModel):
