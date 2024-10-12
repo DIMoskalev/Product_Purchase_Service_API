@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from sqlalchemy import func
+from sqlalchemy import func, MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs, AsyncSession
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 
@@ -9,6 +9,9 @@ from app.config import get_db_url
 
 # URL для подключения к базе данных PostgreSQL
 DATABASE_URL = get_db_url()
+
+# Метаданные для SQLAlchemy
+metadata = MetaData()
 
 # Создание асинхронного движка
 engine = create_async_engine(DATABASE_URL, echo=True)
