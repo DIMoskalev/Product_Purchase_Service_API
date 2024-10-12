@@ -1,3 +1,5 @@
+from typing import Optional
+
 from passlib.context import CryptContext
 from pydantic import EmailStr
 from jose import jwt
@@ -28,7 +30,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 async def authenticate_user(email: EmailStr, password: str, phone: str):
-    user = await UsersDAO.get_one_or_none(email=email) or await UsersDAO.get_one_or_none(phone=phone)
+    if email and email is not Optional[str]:
+        user = await UsersDAO.get_one_or_none(email=email)
+    else:
+        user = await UsersDAO.get_one_or_none(phone=phone)
     if not user or verify_password(plain_password=password, hashed_password=user.hashed_password) is False:
         return None
     return user

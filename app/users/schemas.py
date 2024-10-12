@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -48,6 +49,6 @@ class UserGet(BaseModel):
 
 
 class UserLogin(BaseModel):
-    email: str = Field(..., description="Электронная почта")
-    phone: str = Field(..., description="Номер телефона")
+    email: None | str = Field(Optional[str], description="Электронная почта")
+    phone: None | str = Field(Optional[str], description="Номер телефона")
     hashed_password: str = Field(..., min_length=8, max_length=30, description="Пароль, от 5 до 30 символов")
