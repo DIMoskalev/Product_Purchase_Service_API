@@ -3,8 +3,9 @@ import asyncio
 from typing import AsyncGenerator
 
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -51,5 +52,5 @@ client = TestClient(application)
 
 @pytest.fixture(scope="session")
 async def ac() -> AsyncGenerator[AsyncClient, None]:
-    async with AsyncClient(app=application, base_url="http://test") as ac:
+    async with AsyncClient(transport=ASGITransport(app=application), base_url="http://test", ) as ac:
         yield ac
