@@ -28,6 +28,17 @@ async def test_register_user_again(ac: AsyncClient):
     assert response.status_code == 409
 
 
+async def test_login_fail_incorrect_data(ac: AsyncClient):
+    response = await ac.post("/users/login/", json={
+        "full_name": "Test",
+        "email": "Test@test.ru",
+        "phone": "+79999999999",
+        "hashed_password": "Testtesttest1!"
+    }
+                             )
+    assert response.status_code == 401
+
+
 async def test_login_success(ac: AsyncClient):
     response = await ac.post("/users/login/", json={
         "full_name": "Test",
