@@ -1,15 +1,15 @@
-from fastapi import APIRouter, Response, Depends, status, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database import SessionLocal, get_db
+from app.database import get_db
 from app.exceptions import ForbiddenException, ProductAlreadyExistsException, NoProductIdException, \
     NoActiveProductException
 from app.models import Product, User
 
 from app.products.dao import ProductsDAO
 from app.users.dependencies import get_current_user, get_current_admin_user
-from app.products.schemas import ProductGet, ProductCreate, ProductUpdate, ProductDelete
+from app.products.schemas import ProductGet, ProductCreate, ProductUpdate
 
 router = APIRouter(prefix="/products", tags=["Работа с товарами"])
 
@@ -32,7 +32,7 @@ async def get_active_products(user_data: User = Depends(get_current_user), db: A
 
 @router.get("/{product_id}/", summary="Получить информацию о текущем товаре", response_model=list[ProductGet])
 async def get_product_info(product_id: int, user_data: User = Depends(get_current_user),
-                               db: AsyncSession = Depends(get_db)):
+                           db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Product).filter(Product.id == product_id))
     products = result.scalars().all()  # Получение списка из одного, запрошенного товара
 
@@ -52,7 +52,7 @@ async def create_product(product_data: ProductCreate, user: User = Depends(get_c
         raise ForbiddenException
     product_dict = product_data.model_dump()
     await ProductsDAO.add(**product_dict)
-    return {'message': f'Вы успешно добавили товар!'}
+    return {'message': 'Вы успешно добавили товар!'}
 
 
 @router.put("/{product_id}/", summary="Обновить информацию о товаре", response_model=ProductUpdate)

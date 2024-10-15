@@ -18,7 +18,7 @@ async def register_user(user_data: UserCreate) -> dict:
     user_dict = user_data.model_dump()
     user_dict['hashed_password'] = get_password_hash(user_data.hashed_password)
     await UsersDAO.add(**user_dict)
-    return {'message': f'Вы успешно зарегистрированы!'}
+    return {'message': 'Вы успешно зарегистрированы!'}
 
 
 @router.post("/login/", summary="Войти в систему")
