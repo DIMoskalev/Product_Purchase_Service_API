@@ -31,10 +31,10 @@ async def get_active_products(user_data: User = Depends(get_current_user), db: A
 
 
 @router.get("/{product_id}/", summary="Получить информацию о текущем товаре", response_model=list[ProductGet])
-async def get_active_products(product_id: int, user_data: User = Depends(get_current_user),
-                              db: AsyncSession = Depends(get_db)):
+async def get_product_info(product_id: int, user_data: User = Depends(get_current_user),
+                               db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Product).filter(Product.id == product_id))
-    products = result.scalars().all()  # Получение списка всех активных товаров
+    products = result.scalars().all()  # Получение списка из одного, запрошенного товара
 
     if not products:
         raise NoProductIdException
@@ -43,14 +43,14 @@ async def get_active_products(product_id: int, user_data: User = Depends(get_cur
 
 
 @router.post("/create_product/", summary="Создать товар")
-async def register_user(product_data: ProductCreate, user: User = Depends(get_current_admin_user)):
+async def create_product(product_data: ProductCreate, user: User = Depends(get_current_admin_user)):
     product = await ProductsDAO.get_one_or_none(name=product_data.name)
     if product:
         raise ProductAlreadyExistsException
     # Только для администраторов
     if not user.is_admin:
         raise ForbiddenException
-    product_dict = product_data.dict()
+    product_dict = product_data.model_dump()
     await ProductsDAO.add(**product_dict)
     return {'message': f'Вы успешно добавили товар!'}
 

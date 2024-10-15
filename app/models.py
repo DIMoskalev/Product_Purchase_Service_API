@@ -30,7 +30,7 @@ class Product(Base):
     price: Mapped[int_null_false]
     is_active: Mapped[bool_default_true]
 
-    carts: Mapped["Cart"] = relationship("Cart", back_populates="products")
+    cartitems: Mapped["CartItem"] = relationship("CartItem", back_populates="products", lazy="selectin")
 
     def __str__(self):
         return f"{self.__class__.__name__}(id={self.id}, name={self.name!r}, price={self.price})"
@@ -42,15 +42,28 @@ class Product(Base):
 # Создаем модель таблицы корзины
 class Cart(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+
+    users: Mapped["User"] = relationship("User", back_populates="carts", lazy="selectin")
+    cartitems: Mapped["CartItem"] = relationship("CartItem", back_populates="carts", lazy="selectin")
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id={self.id}, user_id={self.user_id})"
+
+    def __repr__(self):
+        return str(self)
+
+
+class CartItem(Base):
+
+    cart_id: Mapped[int] = mapped_column(ForeignKey("carts.id"), nullable=False)
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
     quantity: Mapped[int_null_false] = mapped_column(default=1)
 
-    users: Mapped["User"] = relationship("User", back_populates="carts")
-    products: Mapped["Product"] = relationship("Product", back_populates="carts")
+    carts: Mapped["Cart"] = relationship("Cart", back_populates="cartitems", lazy="selectin")
+    products: Mapped["Product"] = relationship("Product", back_populates="cartitems", lazy="selectin")
 
     def __str__(self):
-        return (f"{self.__class__.__name__}(id={self.id}, "
-                f"user_id={self.user_id}, product_id={self.product_id}, quantity={self.quantity})")
+        return f"{self.__class__.__name__}(id={self.id}, cart_id={self.cart_id}, product_id={self.product_id}, quantity={self.quantity})"
 
     def __repr__(self):
         return str(self)

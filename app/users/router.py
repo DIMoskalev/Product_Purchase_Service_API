@@ -15,7 +15,7 @@ async def register_user(user_data: UserCreate) -> dict:
     user = await UsersDAO.get_one_or_none(email=user_data.email)
     if user:
         raise UserAlreadyExistsException
-    user_dict = user_data.dict()
+    user_dict = user_data.model_dump()
     user_dict['hashed_password'] = get_password_hash(user_data.hashed_password)
     await UsersDAO.add(**user_dict)
     return {'message': f'Вы успешно зарегистрированы!'}
