@@ -8,8 +8,8 @@ from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 from app.config import get_db_url, get_test_db_url
 
 # URL для подключения к базе данных PostgreSQL
-DATABASE_URL = get_test_db_url()
-# DATABASE_URL = get_db_url()
+# DATABASE_URL = get_test_db_url()
+DATABASE_URL = get_db_url()
 
 # Создание асинхронного движка
 engine = create_async_engine(DATABASE_URL, echo=True)
