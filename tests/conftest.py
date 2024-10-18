@@ -1,8 +1,11 @@
-import asyncio
+import os
+import pytest
+
+os.environ['TEST'] = 'True'
 
 from typing import AsyncGenerator
+import asyncio
 
-import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker

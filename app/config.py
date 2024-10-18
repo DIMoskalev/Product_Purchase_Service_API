@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     POSTGRES_PORT_TEST: str
     POSTGRES_PASSWORD_TEST: str
 
+    TEST: bool
+
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
     )
