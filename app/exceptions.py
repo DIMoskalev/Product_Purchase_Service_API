@@ -28,3 +28,6 @@ NoProductIdException = HTTPException(status_code=status.HTTP_404_NOT_FOUND,
 
 NoActiveProductException = HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                                          detail='Не найдены активные товары')
+
+ProductIsUnActive = HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                  detail='Товар с текущим id не активен')

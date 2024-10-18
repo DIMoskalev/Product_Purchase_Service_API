@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.database import get_db
+from app.exceptions import ProductIsUnActive
 from app.models import Cart, CartItem, Product, User
 from app.carts.schemas import CartCreate, CartItemResponse, CartResponse
 from app.users.dependencies import get_current_user
@@ -22,6 +23,9 @@ async def add_to_cart(cartitems: CartCreate, user_data: User = Depends(get_curre
 
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
+
+    if product.is_active is False:
+        raise ProductIsUnActive
 
     cart = await db.execute(select(Cart).filter(Cart.user_id == user.id))
     cart = cart.scalars().first()

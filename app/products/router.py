@@ -33,7 +33,7 @@ async def get_active_products(user_data: User = Depends(get_current_user), db: A
 @router.get("/{product_id}/", summary="Получить информацию о текущем товаре", response_model=list[ProductGet])
 async def get_product_info(product_id: int, user_data: User = Depends(get_current_user),
                            db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Product).filter(Product.id == product_id))
+    result = await db.execute(select(Product).filter(Product.id == product_id, Product.is_active == True))
     products = result.scalars().all()  # Получение списка из одного, запрошенного товара
 
     if not products:
