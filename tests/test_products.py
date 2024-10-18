@@ -84,9 +84,20 @@ async def test_get_non_existent_product(ac: AsyncClient):
 
 async def test_create_product_again_admin(ac: AsyncClient):
     data = {
-        "name": "Test Product",
-        "description": "Test Product Description",
-        "price": 2000,
+        "name": "Test Product 3",
+        "description": "Test Product Description 3",
+        "price": 3000,
+        "quantity": 5,
+    }
+    response = await ac.post("/products/create_product/", json=data)
+    assert response.status_code == 200
+
+
+async def test_create_product_second_again_admin(ac: AsyncClient):
+    data = {
+        "name": "Test Product 4",
+        "description": "Test Product Description 4",
+        "price": 4000,
         "quantity": 5,
     }
     response = await ac.post("/products/create_product/", json=data)
@@ -97,7 +108,7 @@ async def test_get_product_info(ac: AsyncClient):
     response = await ac.get("/products/3/")
     assert response.status_code == 200
     print(response.json())
-    assert response.json()[0] == {'name': 'Test Product', 'price': 2000, 'id': 3, 'is_active': True}
+    assert response.json()[0] == {'name': 'Test Product 3', 'price': 3000, 'id': 3, 'is_active': True}
 
 
 async def test_update_product_non_existent(ac: AsyncClient):
@@ -134,7 +145,7 @@ async def test_login_not_admin(ac: AsyncClient):
     assert "access_token" in response.json()
 
 
-async def test_create_product__not_admin(ac: AsyncClient):
+async def test_create_product_not_admin(ac: AsyncClient):
     data = {
         "name": "Test Product false",
         "description": "Test Product Description",
